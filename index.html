@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Career Story 0.1</title>
+  <link href="./dist/styles.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.5/dist/cdn.min.js" defer></script>
+</head>
+<body class="bg-gray-100 p-4">
+  <div class="container mx-auto flex">
+    <h1 class="text-3xl font-bold mb-4">Career Story 0.1</h1>
+  </div>
+  <div class="container mx-auto flex" x-data="chatApp()">
+    <div class="w-2/3">
+      <div class="bg-white p-4 rounded-lg shadow-md">
+        <div id="chat-area" class="mb-4 p-4 h-64 overflow-y-auto border border-gray-300 rounded">
+          <p><strong>Welcome to Career Builder: </strong>
+            <span>Start a chat with me to be #Amazed.</span>
+          </p>
+          <template x-for="message in messages">
+            <p><strong x-text="message.sender + ':'"></strong> <span x-text="message.text"></span></p>
+          </template>
+        </div>
+        <textarea x-model="message" class="w-full p-2 border border-gray-300 rounded" rows="4"></textarea>
+        <button @click="sendMessage" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Send Chat Response</button>
+<button @click="reset" class="mt-2 ml-2 px-4 py-2 bg-red-500 text-white rounded">Reset Chat</button>
+<div class="flex justify-between items-center mt-2 w-full">
+  <button @click="toggleVoiceInput" x-text="isListening ? 'Listening...' : 'Voice Input'" class="px-4 py-2 bg-blue-500 text-white rounded"></button>    
+  <button @click="sendVoiceResponse" x-show="showSendVoiceButton" class="ml-2 px-4 py-2 bg-blue-500 text-black rounded">Send Voice Response</button>
+</div>
+        <div x-show="chatStarted" class="bg-white p-4 rounded-lg shadow-md mt-5">
+          <h2 class="text-2xl font-bold mb-2">Upload CV</h2>
+          <div class="border border-gray-300 p-4 rounded">
+            <input type="file" id="cvUpload" class="mb-2">
+            <button @click="uploadCV" class="px-4 py-2 bg-blue-500 text-white rounded">Upload</button>
+            <div id="uploadFeedback" class="mt-2"></div>
+          </div>
+        </div>
+      </div>         
+
+      <!-- Campaign Areas -->
+      <div id="campaign-area" class="mt-4">
+        <div class="bg-white p-4 rounded-lg shadow-md mt-5">
+          <h2 class="text-2xl font-bold mb-2">An Introduction to Me</h2>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="introduction" class="block mb-2 font-semibold">Introduction</label>
+            <div id="introduction" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-md mt-5">
+          <h2 class="text-2xl font-bold mb-2">My Industry Experience</h2>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="industry_experience" class="block mb-2 font-semibold">Industry Experience</label>
+            <div id="industry_experience" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-md mt-5">
+          <h2 class="text-2xl font-bold mb-2">Early Career Inspiration</h2>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="career_inspiration" class="block mb-2 font-semibold">Career Inspiration</label>
+            <div id="career_inspiration" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-md mt-5">
+          <h2 class="text-2xl font-bold mb-2">Career Highlights</h2>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="highlights" class="block mb-2 font-semibold">Highlights</label>
+            <div id="highlights" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-md mt-5">
+          <h2 class="text-2xl font-bold mb-2">Skills and Expertise</h2>
+
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="hardskill_technical_skills" class="block mb-2 font-semibold">Hard Skills - Technical</label>
+            <div id="hardskill_technical_skills" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="hardskill_analytical_skills" class="block mb-2 font-semibold">Hard Skills - Analytical</label>
+            <div id="hardskill_analytical_skills" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="hardskill_creative_skills" class="block mb-2 font-semibold">Hard Skills - Creative</label>
+            <div id="hardskill_creative_skills" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="hardskill_language_skills" class="block mb-2 font-semibold">Hard Skills - Language</label>
+            <div id="hardskill_language_skills" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="hardskill_management_skills" class="block mb-2 font-semibold">Hard Skills - Management</label>
+            <div id="hardskill_management_skills" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="hardskill_marketing_skills" class="block mb-2 font-semibold">Hard Skills - Marketing</label>
+            <div id="hardskill_marketing_skills" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="hardskill_sales_skills" class="block mb-2 font-semibold">Hard Skills - Sales</label>
+            <div id="hardskill_sales_skills" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="hardskill_administration_skills" class="block mb-2 font-semibold">Hard Skills - Administration</label>
+            <div id="hardskill_administration_skills" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="hardskill_financial_skills" class="block mb-2 font-semibold">Hard Skills - Financial</label>
+            <div id="hardskill_financial_skills" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="hardskill_engineering_skills" class="block mb-2 font-semibold">Hard Skills - Engineering</label>
+            <div id="hardskill_engineering_skills" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-md mt-5">
+          <h2 class="text-2xl font-bold mb-2">Soft Skills</h2>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="softskills" class="block mb-2 font-semibold">Soft Skills</label>
+            <div id="softskills" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-md mt-5">
+          <h2 class="text-2xl font-bold mb-2">Career Evolution and Experience</h2>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="career_evolution" class="block mb-2 font-semibold">Career Evolution</label>
+            <div id="career_evolution" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-md mt-5">
+          <h2 class="text-2xl font-bold mb-2">My Future Goals</h2>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="goals" class="block mb-2 font-semibold">Goals</label>
+            <div id="goals" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-md mt-5">
+          <h2 class="text-2xl font-bold mb-2">The Type of Environment I Would Like to Work In</h2>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="environment" class="block mb-2 font-semibold">Environment</label>
+            <div id="environment" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-md mt-5">
+          <h2 class="text-2xl font-bold mb-2">My Personal Philosophy</h2>
+          <div class="border border-gray-300 p-4 rounded">
+            <label for="philosophy" class="block mb-2 font-semibold">Philosophy</label>
+            <div id="philosophy" class="p-2 mb-4 bg-gray-100 rounded"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="index.js"></script>
+</body>
+</html>
